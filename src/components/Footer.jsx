@@ -1,12 +1,28 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
     
   // Simple footer links structure
   const links = {
-    Shop: ['All Gemstones', 'New Arrivals', 'Best Sellers', 'Investment Grade'],
-    Company: ['About Us', 'Our Story', 'Careers', 'Press'],
-    Support: ['Contact Us', 'FAQs', 'Shipping & Returns', 'Size Guide']
+    Shop: [
+        { name: 'All Gemstones', path: '/gemstones' },
+        { name: 'New Arrivals', path: '/gemstones' },
+        { name: 'Best Sellers', path: '/gemstones' },
+        { name: 'Investment Grade', path: '/gemstones' }
+    ],
+    Company: [
+        { name: 'About Us', path: '/about' },
+        { name: 'Our Story', path: '/about' },
+        { name: 'Careers', path: '#' },
+        { name: 'Press', path: '#' }
+    ],
+    Support: [
+        { name: 'Contact Us', path: '#' },
+        { name: 'FAQs', path: '#' },
+        { name: 'Shipping & Returns', path: '#' },
+        { name: 'Size Guide', path: '#' }
+    ]
   };
 
   return (
@@ -16,9 +32,9 @@ const Footer = () => {
             
             {/* Brand Column */}
             <div className="lg:col-span-2">
-                <a href="/" className="block mb-6">
+                <Link to="/" className="block mb-6">
                     <img src="/logo.jpg" alt="Lucky Gems" className="h-16 w-16 object-cover rounded-full shadow-sm mix-blend-multiply opacity-80" />
-                </a>
+                </Link>
                 <p className="text-sm leading-7 mb-6 max-w-sm text-primary/80">
                     Elevating the art of gemstone collection with AI-driven precision and timeless elegance. Find the piece that speaks to your soul.
                 </p>
@@ -38,8 +54,8 @@ const Footer = () => {
                     <h4 className="text-white font-serif font-bold mb-6 tracking-wide">{category}</h4>
                     <ul className="space-y-4 text-sm">
                         {items.map(item => (
-                            <li key={item}>
-                                <a href="#" className="hover:text-secondary transition-colors duration-200">{item}</a>
+                            <li key={item.name}>
+                                <Link to={item.path} className="hover:text-secondary transition-colors duration-200">{item.name}</Link>
                             </li>
                         ))}
                     </ul>
