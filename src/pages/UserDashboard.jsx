@@ -6,27 +6,31 @@ const UserDashboard = () => {
   const [activeTab, setActiveTab] = useState('collection');
   const [recommendations, setRecommendations] = useState([]);
 
+  const fetchRecommendations = async (seedId = null) => {
+    try {
+      setRecommendations([]); // Show loading state
+      const id = seedId || Math.floor(Math.random() * 100) + 1;
+      const response = await fetch(`http://localhost:5000/api/gemstones/${id}/recommendations`);
+      const result = await response.json();
+      if (result.success) {
+        setRecommendations(result.data);
+      }
+    } catch (err) {
+      console.error('Failed to fetch recommendations:', err);
+    }
+  };
+
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
     if (storedUser) {
       setUser(JSON.parse(storedUser));
     }
-
-    const fetchRecommendations = async () => {
-      try {
-        // Since we don't have real user collections yet, we'll get recommendations for gem_id 1
-        const response = await fetch('http://localhost:5000/api/gemstones/1/recommendations');
-        const result = await response.json();
-        if (result.success) {
-          setRecommendations(result.data);
-        }
-      } catch (err) {
-        console.error('Failed to fetch recommendations:', err);
-      }
-    };
-
     fetchRecommendations();
   }, []);
+
+  const handleRefreshRecommendations = () => {
+    fetchRecommendations();
+  };
 
   if (!user) {
     return (
@@ -115,7 +119,15 @@ const UserDashboard = () => {
             
             {activeTab === 'recommendations' && (
               <div className="animate-in fade-in duration-700">
-                 <h2 className="text-2xl font-serif text-primary mb-8">AI-Personalized Selection</h2>
+                 <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-2xl font-serif text-primary">AI-Personalized Selection</h2>
+                    <button 
+                      onClick={handleRefreshRecommendations}
+                      className="text-[10px] uppercase tracking-[0.2em] font-bold text-secondary hover:text-primary transition-colors flex items-center gap-2"
+                    >
+                      <span className="text-lg">🔄</span> Explore New Styles
+                    </button>
+                 </div>
                  <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
                    {recommendations.length > 0 ? recommendations.map(gem => (
                       <div key={gem.id} className="flex flex-col p-6 bg-gray-50 border border-gray-100 rounded-sm hover:border-secondary/30 transition-colors cursor-pointer group">
