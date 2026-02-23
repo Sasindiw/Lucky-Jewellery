@@ -6,6 +6,8 @@ import Home from './pages/Home';
 import Gemstones from './pages/Gemstones';
 import About from './pages/About';
 import Login from './pages/Login';
+import AdminDashboard from './pages/AdminDashboard';
+import UserDashboard from './pages/UserDashboard';
 
 function App() {
   return (
@@ -16,6 +18,8 @@ function App() {
         <Route path="/gemstones" element={<Gemstones />} />
         <Route path="/about" element={<About />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
+        <Route path="/dashboard" element={<UserDashboard />} />
       </Routes>
       <Footer />
     </div>
