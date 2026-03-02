@@ -8,8 +8,8 @@ const WhyChooseUs = () => {
         icon: "M9 12.75 11.25 15 15 9.75M21 12c0 5.523-4.477 10-10 10S1 17.523 1 12 5.477 2 11 2s10 4.477 10 10Z"
     },
     { 
-        title: "AI Personalization", 
-        description: "Our algorithms find the gem that resonates with your aura.",
+        title: "Rare Specimens", 
+        description: "Access a curated selection of one-of-a-kind gemstones.",
         icon: "M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 0 0-2.456 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"
     },
     { 
@@ -29,7 +29,7 @@ const WhyChooseUs = () => {
                  Why the world chooses <span className="italic text-secondary">Lucky Gems</span>
                </h2>
                <p className="text-primary/70 leading-relaxed mb-8">
-                 We combine centuries of gemological tradition with cutting-edge artificial intelligence to deliver an experience that is both authentic and modern.
+                 We combine centuries of gemological tradition with modern verification standards to deliver an experience that is both authentic and modern.
                </p>
                <a href="#about" className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-widest hover:text-secondary transition-colors">
                  Read Our Story <span className="text-xl">&rarr;</span>

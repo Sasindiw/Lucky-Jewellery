@@ -1,15 +1,30 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 const FeaturedGemstones = () => {
-    const gemstones = [
-        { id: 1, name: "Royal Blue Sapphire", carat: "2.5ct", price: "$3,400", color: "text-blue-600", image: "/images/sapphire.png" },
-        { id: 2, name: "Crimson Ruby", carat: "1.8ct", price: "$4,200", color: "text-red-600", image: "/images/ruby.png" },
-        { id: 3, name: "Colombian Emerald", carat: "1.5ct", price: "$5,000", color: "text-green-600", image: "/images/emerald.png" },
-        { id: 4, name: "Imperial Topaz", carat: "3.2ct", price: "$2,800", color: "text-yellow-600", image: "/images/ruby.png" }, // Reusing ruby for topaz placeholder or generate new if needed, using ruby for now
-        { id: 5, name: "Amethyst Geode", carat: "4.0ct", price: "$900", color: "text-purple-600", image: "/images/sapphire.png" }, // Reusing sapphire
-        { id: 6, name: "Black Opal", carat: "2.1ct", price: "$6,700", color: "text-gray-800", image: "/images/emerald.png" }, // Reusing emerald
-    ];
+    const navigate = useNavigate();
+    const { addToCart } = useCart();
+    const user = localStorage.getItem('user');
+    const [gemstones, setGemstones] = React.useState([]);
+    const [loading, setLoading] = React.useState(true);
+
+    React.useEffect(() => {
+        const fetchFeatured = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/gemstones?limit=6');
+                const result = await response.json();
+                if (result.success) {
+                    setGemstones(result.data);
+                }
+            } catch (err) {
+                console.error("Failed to fetch featured gems", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchFeatured();
+    }, []);
 
   return (
     <section id="gemstones" className="py-32 bg-white relative">
@@ -28,31 +43,55 @@ const FeaturedGemstones = () => {
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-20">
-          {gemstones.map((gem, index) => (
-            <div key={gem.id} className="group cursor-pointer">
+          {loading ? (
+             [...Array(3)].map((_, i) => (
+                <div key={i} className="animate-pulse">
+                    <div className="bg-gray-100 aspect-[4/5] w-full mb-8"></div>
+                    <div className="h-6 bg-gray-100 w-3/4 mb-4"></div>
+                    <div className="h-4 bg-gray-100 w-1/2"></div>
+                </div>
+             ))
+          ) : gemstones.map((gem, index) => (
+            <Link key={gem.id} to={`/gemstones/${gem.id}`} className="group cursor-pointer block">
               {/* Image Area - Aspect Ratio Box */}
               <div className="bg-gray-50 aspect-[4/5] w-full relative overflow-hidden mb-8">
                   <div className="absolute inset-0 flex items-center justify-center bg-gray-100 group-hover:bg-gray-200 transition-colors duration-500">
-                    <img src={gem.image} alt={gem.name} className="w-3/4 h-3/4 object-contain drop-shadow-xl group-hover:scale-110 transition-transform duration-700 ease-out" />
+                    <img src={`/images/${gem.image}`} alt={gem.name} className="w-3/4 h-3/4 object-contain drop-shadow-xl group-hover:scale-110 transition-transform duration-700 ease-out" onError={(e) => e.target.src = '/images/sapphire.png'} />
                   </div>
                   <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <button className="w-10 h-10 bg-white flex items-center justify-center rounded-full shadow-md hover:bg-primary hover:text-white transition-colors">
+                      <div className="w-10 h-10 bg-white flex items-center justify-center rounded-full shadow-md hover:bg-primary hover:text-white transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                         </svg>
-                      </button>
+                      </div>
                   </div>
               </div>
               
               {/* Text Area - Minimal */}
               <div>
                   <h3 className="text-2xl font-serif text-primary mb-2 group-hover:text-secondary transition-colors">{gem.name}</h3>
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-primary/50 tracking-wider uppercase">{gem.carat}</span>
-                    <span className="text-primary font-medium">{gem.price}</span>
+                  <div className="flex justify-between items-center text-sm mb-4">
+                    <span className="text-primary/50 tracking-wider uppercase">{gem.carat}ct</span>
+                    <span className="text-primary font-medium">${gem.price}</span>
                   </div>
+                  <button 
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (user) {
+                          if (gem.stock > 0) {
+                              addToCart(gem);
+                          }
+                      } else {
+                          navigate('/login');
+                      }
+                    }}
+                    className="w-full py-3 border border-primary text-primary text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled={gem.status !== 'In Stock'}
+                  >
+                    {gem.status !== 'In Stock' ? 'Sold Out' : 'Add to Cart'}
+                  </button>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
         

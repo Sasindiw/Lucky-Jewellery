@@ -1,38 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
+import Swal from 'sweetalert2';
 
 const UserDashboard = () => {
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('collection');
-  const [recommendations, setRecommendations] = useState([]);
-
-  const fetchRecommendations = async (seedId = null) => {
-    try {
-      setRecommendations([]); // Show loading state
-      const id = seedId || Math.floor(Math.random() * 100) + 1;
-      const response = await fetch(`http://localhost:5000/api/gemstones/${id}/recommendations`);
-      const result = await response.json();
-      if (result.success) {
-        setRecommendations(result.data);
-      }
-    } catch (err) {
-      console.error('Failed to fetch recommendations:', err);
-    }
-  };
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+  const { cart, removeFromCart, updateQuantity, getCartTotal, getCartCount, clearCart } = useCart();
 
   useEffect(() => {
-    const storedUser = localStorage.getItem('user');
-    if (storedUser) {
-      setUser(JSON.parse(storedUser));
-    }
-    fetchRecommendations();
+    const fetchUserData = async () => {
+      const storedUser = localStorage.getItem('user');
+      const token = localStorage.getItem('token');
+      
+      if (storedUser && token) {
+        setUser(JSON.parse(storedUser));
+        try {
+          const res = await fetch('http://localhost:5000/api/orders/myorders', {
+            headers: { 'Authorization': `Bearer ${token}` }
+          });
+          const data = await res.json();
+          if (data.success) {
+            setOrders(data.data);
+          }
+        } catch (err) {
+          console.error("Failed to fetch orders", err);
+        }
+      }
+      setLoading(false);
+    };
+
+    fetchUserData();
   }, []);
 
-  const handleRefreshRecommendations = () => {
-    fetchRecommendations();
-  };
+  const totalGemsOwned = orders.reduce((total, order) => {
+    return total + order.OrderItems.reduce((sum, item) => sum + item.quantity, 0);
+  }, 0);
 
-  if (!user) {
+  // Flatten ordered gems for display
+  const collectionGems = orders.flatMap(order => 
+    order.OrderItems.map(item => ({
+      ...item.Gemstone,
+      orderDate: new Date(order.order_date).toLocaleDateString('en-US', { month: 'long', year: 'numeric' }),
+      purchasePrice: item.Gemstone.price
+    }))
+  );
+
+  if (loading || !user) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50 pt-20">
         <div className="animate-pulse text-primary/40 text-lg font-serif">Loading your sanctuary...</div>
@@ -41,7 +58,8 @@ const UserDashboard = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white flex flex-col pt-24">
+    <div className="min-h-screen bg-white flex flex-col pt-24 relative">
+
       <main className="flex-1 container mx-auto px-6 md:px-12 py-12">
         {/* Profile Header */}
         <header className="mb-16 flex flex-col md:flex-row md:items-end justify-between gap-6 pb-12 border-b border-gray-100">
@@ -52,19 +70,15 @@ const UserDashboard = () => {
           </div>
           <div className="flex gap-4">
             <div className="bg-gray-50 px-8 py-4 rounded-sm border border-gray-100 flex flex-col items-center min-w-[120px]">
-              <span className="text-primary font-serif text-xl">3</span>
+              <span className="text-primary font-serif text-xl">{totalGemsOwned}</span>
               <span className="text-[10px] uppercase tracking-widest text-primary/40">Gems Owned</span>
-            </div>
-            <div className="bg-gray-50 px-8 py-4 rounded-sm border border-gray-100 flex flex-col items-center min-w-[120px]">
-              <span className="text-primary font-serif text-xl">12</span>
-              <span className="text-[10px] uppercase tracking-widest text-primary/40">AI Analyzed</span>
             </div>
           </div>
         </header>
 
         {/* Dashboard Navigation */}
         <div className="flex gap-12 mb-12 border-b border-gray-50 overflow-x-auto whitespace-nowrap scrollbar-hide">
-          {['Collection', 'Recommendations', 'Analysis History', 'Account'].map((tab) => (
+          {['Collection', 'Cart'].map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab.toLowerCase())}
@@ -94,106 +108,127 @@ const UserDashboard = () => {
                 </div>
                 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                    {[1, 2].map((i) => (
-                      <div key={i} className="group bg-gray-50 rounded-sm overflow-hidden border border-gray-100 hover:shadow-xl hover:shadow-gray-100 transition-all duration-500">
+                    {collectionGems.length > 0 ? collectionGems.map((gem, index) => (
+                      <Link to={`/gemstones/${gem.id}`} key={`${gem.id}-${index}`} className="group bg-gray-50 rounded-sm overflow-hidden border border-gray-100 hover:shadow-xl hover:shadow-gray-100 transition-all duration-500 block">
                         <div className="aspect-square bg-white relative overflow-hidden">
                            <div className="absolute inset-0 flex items-center justify-center opacity-40 group-hover:scale-110 transition-transform duration-700">
-                             <img src={`/images/${i === 1 ? 'sapphire' : 'ruby'}.png`} alt="Gemstone" className="w-1/2 h-1/2 object-contain" />
+                             <img src={`/images/${gem.image}`} alt={gem.variety} className="w-1/2 h-1/2 object-contain" />
                            </div>
                            <div className="absolute top-4 right-4 group-hover:translate-x-0 translate-x-12 opacity-0 group-hover:opacity-100 transition-all duration-300">
                               <span className="bg-white/80 backdrop-blur-md px-3 py-1 rounded-full text-[10px] uppercase tracking-widest text-primary font-bold shadow-sm">Verified</span>
                            </div>
                         </div>
                         <div className="p-6">
-                            <h3 className="text-primary font-serif text-lg mb-1">{i === 1 ? 'Oval Cut Sapphire' : 'Marquise Ruby'}</h3>
+                            <h3 className="text-primary font-serif text-lg mb-1">{gem.name || gem.variety}</h3>
                             <div className="flex justify-between items-center">
-                              <span className="text-[10px] uppercase tracking-widest text-primary/40 font-bold">Bought May 2025</span>
-                              <span className="text-secondary text-sm font-medium">$4,500</span>
+                              <span className="text-[10px] uppercase tracking-widest text-primary/40 font-bold">Bought {gem.orderDate}</span>
+                              <span className="text-secondary text-sm font-medium">{gem.purchasePrice}</span>
                             </div>
                         </div>
+                      </Link>
+                    )) : (
+                      <div className="col-span-2 py-20 text-center border-2 border-dashed border-gray-100 rounded-sm">
+                        <p className="text-primary/30 font-serif italic text-lg">Your collection awaits.</p>
+                        <p className="text-[10px] uppercase tracking-widest text-primary/20 mt-2">Discover your first masterpiece today.</p>
                       </div>
-                    ))}
+                    )}
                 </div>
               </div>
             )}
-            
-            {activeTab === 'recommendations' && (
+
+            {activeTab === 'cart' && (
               <div className="animate-in fade-in duration-700">
-                 <div className="flex justify-between items-center mb-8">
-                    <h2 className="text-2xl font-serif text-primary">AI-Personalized Selection</h2>
-                    <button 
-                      onClick={handleRefreshRecommendations}
-                      className="text-[10px] uppercase tracking-[0.2em] font-bold text-secondary hover:text-primary transition-colors flex items-center gap-2"
-                    >
-                      <span className="text-lg">🔄</span> Explore New Styles
-                    </button>
-                 </div>
-                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                   {recommendations.length > 0 ? recommendations.map(gem => (
-                      <div key={gem.id} className="flex flex-col p-6 bg-gray-50 border border-gray-100 rounded-sm hover:border-secondary/30 transition-colors cursor-pointer group">
-                        <div className="flex gap-6 items-center mb-6">
-                          <div className="w-24 h-24 bg-white flex items-center justify-center p-2 group-hover:scale-110 transition-transform">
-                            <img 
-                              src={`/images/${gem.image}`} 
-                              alt={gem.name} 
-                              className="w-full h-full object-contain"
-                              onError={(e) => e.target.src = '/images/sapphire.png'}
-                            />
+                <div className="flex justify-between items-center mb-8">
+                  <h2 className="text-2xl font-serif text-primary">Your Private Cart</h2>
+                  <span className="text-xs uppercase tracking-[0.2em] font-bold text-secondary">{getCartCount()} items</span>
+                </div>
+
+                {cart.length === 0 ? (
+                  <div className="py-20 text-center border-2 border-dashed border-gray-100 rounded-sm">
+                    <p className="text-primary/30 font-serif italic text-lg mb-4">Your cart is currently empty.</p>
+                    <Link to="/gemstones" className="text-[10px] uppercase tracking-widest text-secondary font-bold hover:underline">Explore Collection</Link>
+                  </div>
+                ) : (
+                  <div className="space-y-8">
+                    {cart.map((item) => (
+                      <div key={item.id} className="flex flex-col sm:flex-row items-center gap-8 bg-gray-50 p-6 border border-gray-100 rounded-sm hover:border-secondary/20 transition-colors">
+                        <Link to={`/gemstones/${item.id}`} className="w-24 h-24 bg-white p-2 border border-gray-100 shrink-0">
+                          <img src={`/images/${item.image}`} alt={item.variety} className="w-full h-full object-contain" />
+                        </Link>
+                        
+                        <div className="flex-1 w-full">
+                          <div className="flex justify-between items-start mb-1">
+                            <Link to={`/gemstones/${item.id}`}>
+                              <h3 className="text-lg font-serif text-primary hover:text-secondary transition-colors">{item.name || item.variety}</h3>
+                            </Link>
+                            <p className="font-serif text-primary font-bold">${item.price}</p>
                           </div>
-                          <div>
-                            <h4 className="font-serif text-primary text-xl leading-tight">{gem.name}</h4>
-                            <p className="text-secondary font-medium text-sm mb-1">${gem.price}</p>
-                            <span className="text-[10px] uppercase tracking-widest text-primary/40 font-bold bg-white px-2 py-0.5 rounded-full border border-gray-100">
-                              {gem.variety}
-                            </span>
+                          
+                          <div className="flex gap-3 mb-4 text-[10px] text-primary/50 uppercase tracking-widest font-bold">
+                            <span>{item.carat} Ct</span> • <span>{item.color}</span>
+                          </div>
+
+                          <div className="flex items-center justify-between border-t border-gray-200 pt-3">
+                            <div className="flex items-center gap-2">
+                              <span className="text-[10px] uppercase tracking-widest text-primary font-bold">Qty:</span>
+                              <div className="flex items-center bg-white border border-gray-200 rounded-sm">
+                                <button onClick={() => updateQuantity(item.id, item.quantity - 1)} className="px-2 text-primary hover:bg-gray-100">-</button>
+                                <span className="px-3 text-xs font-bold border-x border-gray-200">{item.quantity}</span>
+                                <button 
+                                  onClick={() => updateQuantity(item.id, item.quantity + 1)} 
+                                  disabled={item.quantity >= item.stock}
+                                  className="px-2 text-primary hover:bg-gray-100 disabled:opacity-50"
+                                >+</button>
+                              </div>
+                            </div>
+
+                            <button onClick={() => {
+                                removeFromCart(item.id);
+                                Swal.fire({ toast: true, position: 'top-end', icon: 'info', title: 'Removed', text: 'Item returned to catalog.', showConfirmButton: false, timer: 2000, background: '#1e1e1e', color: '#fff' });
+                            }} className="text-[10px] uppercase tracking-widest font-bold text-red-400 hover:text-red-600">
+                              Remove
+                            </button>
                           </div>
                         </div>
-                        <div className="pt-4 border-t border-gray-200 grid grid-cols-2 gap-y-3">
-                           <div className="flex flex-col">
-                              <span className="text-[8px] uppercase tracking-widest text-primary/40 font-bold">Carat</span>
-                              <span className="text-xs text-primary">{gem.carat}ct</span>
-                           </div>
-                           <div className="flex flex-col">
-                              <span className="text-[8px] uppercase tracking-widest text-primary/40 font-bold">Color</span>
-                              <span className="text-xs text-primary">{gem.color}</span>
-                           </div>
-                           <div className="flex flex-col">
-                              <span className="text-[8px] uppercase tracking-widest text-primary/40 font-bold">Cut</span>
-                              <span className="text-xs text-primary">{gem.cut}</span>
-                           </div>
-                           <div className="flex flex-col">
-                              <span className="text-[8px] uppercase tracking-widest text-primary/40 font-bold">Treatment</span>
-                              <span className="text-xs text-primary">{gem.treatment}</span>
-                           </div>
-                        </div>
-                        <button className="w-full mt-6 py-3 bg-white border border-gray-100 text-[10px] uppercase tracking-widest text-primary font-bold group-hover:bg-primary group-hover:text-white transition-all">
-                          View Match Details
-                        </button>
                       </div>
-                   )) : (
-                     <div className="col-span-2 py-20 text-center border-2 border-dashed border-gray-100 rounded-sm">
-                       <p className="text-primary/30 font-serif italic text-lg">AI Engines Warming Up...</p>
-                       <p className="text-[10px] uppercase tracking-widest text-primary/20 mt-2">Start a new analysis to see recommendations</p>
-                     </div>
-                   )}
-                 </div>
+                    ))}
+                    
+                    <div className="flex justify-between items-center border-t border-gray-100 pt-6">
+                      <button onClick={() => {
+                        Swal.fire({
+                          title: 'Empty Private Cart?',
+                          text: 'All selected masterpieces will be returned to our general inventory.',
+                          icon: 'warning',
+                          showCancelButton: true,
+                          confirmButtonColor: '#1e1e1e',
+                          confirmButtonText: 'Yes, clear it'
+                        }).then((result) => {
+                          if (result.isConfirmed) clearCart();
+                        })
+                      }} className="text-[10px] uppercase tracking-widest text-primary/40 hover:text-primary font-bold">
+                        Clear Cart
+                      </button>
+                      <div className="text-right">
+                        <p className="text-sm text-primary/60 mb-1">Subtotal</p>
+                        <p className="text-2xl font-serif text-secondary">${getCartTotal().toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p>
+                      </div>
+                    </div>
+
+                    <button 
+                      onClick={() => navigate('/checkout')}
+                      className="w-full py-4 bg-primary text-white text-xs font-bold uppercase tracking-[0.2em] hover:bg-secondary transition-all shadow-xl mt-6"
+                    >
+                      Proceed to Secure Checkout
+                    </button>
+                  </div>
+                )}
               </div>
             )}
+            
           </div>
 
           {/* AI Sidebar */}
           <div className="lg:col-span-4 space-y-8">
-            <div className="bg-primary text-white p-8 rounded-sm overflow-hidden relative group">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-secondary/10 rounded-full -mr-16 -mt-16 blur-3xl group-hover:bg-secondary/20 transition-colors duration-700"></div>
-              <h3 className="text-xl font-serif mb-4 relative z-10">AI Gem Assistant</h3>
-              <p className="text-white/60 text-sm font-light mb-8 leading-relaxed relative z-10">
-                Our neural engines are analyzing 500+ data points to find your next perfect centerpiece.
-              </p>
-              <button className="w-full py-4 bg-secondary text-white text-[10px] uppercase tracking-[0.3em] font-bold rounded-sm hover:bg-white hover:text-primary transition-all duration-300 relative z-10">
-                Start New Analysis
-              </button>
-            </div>
-
             <div className="border border-gray-100 rounded-sm p-8">
                <h4 className="text-xs uppercase tracking-[0.2em] font-bold text-primary/30 mb-6">Expert Consultant</h4>
                <div className="flex items-center gap-4">

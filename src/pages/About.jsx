@@ -29,7 +29,7 @@ const About = () => {
                             Starting as a small family-owned atelier in 1980, Lucky Gems has grown into a global destination for collectors and connoisseurs of fine gemstones. Our journey began with a simple promise: to source the most beautiful stones nature has to offer, with absolute transparency.
                         </p>
                         <p>
-                            Today, we bridge the gap between traditional gemology and modern technology. While our master cutters use techniques passed down through generations, our proprietary AI Analysis ensures every stone we offer is verified for origin, quality, and ethical sourcing.
+                            Today, we bridge the gap between traditional gemology and modern quality standards. While our master cutters use techniques passed down through generations, our rigorous certification process ensures every stone we offer is verified for origin, quality, and ethical sourcing.
                         </p>
                     </div>
                 </div>
@@ -48,7 +48,7 @@ const About = () => {
                 {[
                     { title: "Rarity", desc: "We focus on stones that are truly unique, often one-of-a-kind treasures that cannot be found anywhere else." },
                     { title: "Precision", desc: "From the first cut to the final polish, our craftsmanship is governed by an obsession with detail." },
-                    { title: "AI-Verified", desc: "Our cutting-edge algorithms provide an extra layer of certainty for our clients, ensuring 100% authenticity." }
+                    { title: "Certified", desc: "Our thorough verification process provides an extra layer of certainty for our clients, ensuring 100% authenticity." }
                 ].map((value, i) => (
                     <div key={i} className="bg-white p-10 rounded-xl shadow-sm hover:shadow-md transition-shadow">
                         <h3 className="text-2xl font-serif text-secondary mb-4">{value.title}</h3>
