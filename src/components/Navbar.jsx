@@ -60,8 +60,13 @@ const Navbar = () => {
   
   if (user) {
     if (user.role === 'admin') {
-      // Admins should see Home, About but NOT Catalog
-      visibleNavItems = navItems.filter(item => item.name !== 'Catalog');
+      // Admins should see Dashboard, Orders, and Users but NOT Home, About, Catalog
+      visibleNavItems = [
+        { name: 'Dashboard', path: '/admin-dashboard' },
+        { name: 'Sales & Orders', path: '/admin/orders' },
+        { name: 'Client Registry', path: '/admin/users' },
+        { name: 'Gemstone Registry', path: '/admin/gemstones' }
+      ];
     } else {
       // Regular users only show Catalog (They have their own dashboard flow)
       visibleNavItems = navItems.filter(item => item.name === 'Catalog');
@@ -117,22 +122,7 @@ const Navbar = () => {
 
             {user ? (
               <div className="flex items-center gap-6">
-                {user.role === 'admin' ? (
-                  <>
-                    <Link 
-                      to="/admin/orders"
-                      className={`text-xs font-bold uppercase tracking-widest transition-all ${location.pathname === '/admin/orders' ? 'text-secondary underline' : 'text-primary hover:text-secondary'}`}
-                    >
-                      Sales & Orders
-                    </Link>
-                    <Link 
-                      to="/admin/users"
-                      className={`text-xs font-bold uppercase tracking-widest transition-all ${location.pathname === '/admin/users' ? 'text-secondary underline' : 'text-primary hover:text-secondary'}`}
-                    >
-                      Client Registry
-                    </Link>
-                  </>
-                ) : (
+                {user.role !== 'admin' && (
                   <Link 
                     to="/dashboard"
                     className="text-xs font-bold uppercase tracking-widest text-secondary hover:underline transition-all"

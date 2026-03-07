@@ -42,8 +42,8 @@ const Gemstones = () => {
             if (variety !== 'All') params.append('variety', variety);
             if (color !== 'All') params.append('color', color);
             if (shape !== 'All') params.append('shape', shape);
-            if (minCarat) params.append('minCarat', minCarat);
-            if (maxCarat) params.append('maxCarat', maxCarat);
+            if (minCarat !== '') params.append('minCarat', minCarat);
+            if (maxCarat !== '') params.append('maxCarat', maxCarat);
 
             const response = await fetch(`http://localhost:5000/api/gemstones?${params.toString()}`);
             const result = await response.json();
@@ -139,11 +139,11 @@ const Gemstones = () => {
                                 <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold text-primary mb-6">Color Spectrum</h4>
                                 <div className="space-y-4">
                                     {colors.map(c => (
-                                        <label key={c} className="flex items-center gap-4 cursor-pointer group">
+                                        <label key={c} className="flex items-center gap-4 cursor-pointer group" onClick={() => setColor(c)}>
                                             <div className={`w-3 h-3 border transition-all duration-300 flex items-center justify-center ${color === c ? 'border-secondary bg-secondary' : 'border-gray-300 group-hover:border-primary'}`}>
                                                 {color === c && <div className="w-1 h-1 bg-white rounded-full"></div>}
                                             </div>
-                                            <span className={`text-sm tracking-wide transition-colors ${color === c ? 'text-primary font-medium' : 'text-primary/60 group-hover:text-primary'}`} onClick={() => setColor(c)}>{c}</span>
+                                            <span className={`text-sm tracking-wide transition-colors ${color === c ? 'text-primary font-medium' : 'text-primary/60 group-hover:text-primary'}`}>{c}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -153,11 +153,11 @@ const Gemstones = () => {
                                 <h4 className="text-[10px] uppercase tracking-[0.3em] font-bold text-primary mb-6">Shape & Cut</h4>
                                 <div className="space-y-4">
                                     {shapes.map(s => (
-                                        <label key={s} className="flex items-center gap-4 cursor-pointer group">
+                                        <label key={s} className="flex items-center gap-4 cursor-pointer group" onClick={() => setShape(s)}>
                                             <div className={`w-3 h-3 border transition-all duration-300 flex items-center justify-center ${shape === s ? 'border-secondary bg-secondary' : 'border-gray-300 group-hover:border-primary'}`}>
                                                 {shape === s && <div className="w-1 h-1 bg-white rounded-full"></div>}
                                             </div>
-                                            <span className={`text-sm tracking-wide transition-colors ${shape === s ? 'text-primary font-medium' : 'text-primary/60 group-hover:text-primary'}`} onClick={() => setShape(s)}>{s}</span>
+                                            <span className={`text-sm tracking-wide transition-colors ${shape === s ? 'text-primary font-medium' : 'text-primary/60 group-hover:text-primary'}`}>{s}</span>
                                         </label>
                                     ))}
                                 </div>
@@ -220,7 +220,7 @@ const Gemstones = () => {
                                         {/* Image Box */}
                                         <div className="bg-[#f9f9f9] aspect-[4/5] w-full relative overflow-hidden mb-8 flex items-center justify-center cursor-pointer transition-all duration-700 hover:bg-[#f2f2f2]" onClick={() => navigate(`/gemstones/${gem.id}`)}>
                                             <img 
-                                                src={`/images/${gem.image}`} 
+                                                src={gem.image?.includes('gem_') || gem.image?.includes('placeholder') ? `/images/${gem.image}` : `http://localhost:5000/uploads/${gem.image}`} 
                                                 alt={gem.name} 
                                                 className="w-3/4 h-3/4 object-contain drop-shadow-2xl group-hover:scale-110 transition-transform duration-1000 ease-[cubic-bezier(0.25,1,0.5,1)]" 
                                                 onError={(e) => e.target.src = '/images/sapphire.png'}

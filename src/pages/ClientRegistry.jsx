@@ -123,13 +123,13 @@ const ClientRegistry = () => {
         <header className="px-12 py-10 flex justify-between items-center bg-white/80 backdrop-blur-xl border-b border-gray-100">
           <div>
             <h1 className="text-3xl font-serif text-primary capitalize">Client Registry</h1>
-            <p className="text-primary/40 text-xs font-light tracking-wide mt-1">Management of the Lucky Gems esteemed clientele.</p>
+            <p className="text-primary/70 text-sm font-light tracking-wide mt-1">Management of the Lucky Gems esteemed clientele.</p>
           </div>
           
           <div className="flex items-center gap-6">
              <div className="w-px h-8 bg-gray-200"></div>
              <div className="flex items-center gap-3">
-               <span className="text-[10px] uppercase tracking-widest font-bold text-primary/60">Lead Admin</span>
+               <span className="text-xs uppercase tracking-widest font-bold text-primary/60">Lead Admin</span>
                <div className="w-10 h-10 rounded-full bg-secondary text-primary flex items-center justify-center font-serif text-lg">A</div>
              </div>
           </div>
@@ -143,7 +143,7 @@ const ClientRegistry = () => {
                 <span className="text-2xl opacity-40 group-hover:opacity-100 transition-opacity">👑</span>
                 <div className="w-2 h-2 rounded-full bg-secondary/30"></div>
               </div>
-              <h3 className="text-primary/30 text-[10px] uppercase tracking-[0.2em] mb-2 font-bold">Total Members</h3>
+              <h3 className="text-primary/60 text-xs uppercase tracking-[0.2em] mb-2 font-bold">Total Members</h3>
               <p className="text-3xl font-serif text-primary">{users.length}</p>
             </div>
             <div className="bg-white p-8 rounded-sm shadow-sm border border-gray-100 group hover:border-secondary/30 transition-all duration-700">
@@ -151,7 +151,7 @@ const ClientRegistry = () => {
                 <span className="text-2xl opacity-40 group-hover:opacity-100 transition-opacity">✨</span>
                 <div className="w-2 h-2 rounded-full bg-secondary/30"></div>
               </div>
-              <h3 className="text-primary/30 text-[10px] uppercase tracking-[0.2em] mb-2 font-bold">New This Month</h3>
+              <h3 className="text-primary/60 text-xs uppercase tracking-[0.2em] mb-2 font-bold">New This Month</h3>
               <p className="text-3xl font-serif text-primary">
                 {users.filter(u => new Date(u.created_at) > new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)).length}
               </p>
@@ -161,14 +161,14 @@ const ClientRegistry = () => {
                 <span className="text-2xl opacity-40 group-hover:opacity-100 transition-opacity">🛡️</span>
                 <div className="w-2 h-2 rounded-full bg-secondary/30"></div>
               </div>
-              <h3 className="text-primary/30 text-[10px] uppercase tracking-[0.2em] mb-2 font-bold">Admins</h3>
+              <h3 className="text-primary/60 text-xs uppercase tracking-[0.2em] mb-2 font-bold">Admins</h3>
               <p className="text-3xl font-serif text-primary">{users.filter(u => u.role === 'admin').length}</p>
             </div>
           </div>
 
           <div className="bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden animate-in fade-in duration-1000">
             <table className="w-full text-left">
-              <thead className="bg-gray-50/50 text-[10px] uppercase tracking-[0.2em] text-primary/30 font-bold border-b border-gray-100">
+              <thead className="bg-gray-50/50 text-xs uppercase tracking-[0.2em] text-primary/60 font-bold border-b border-gray-100">
                 <tr>
                   <th className="px-8 py-6">Member Profile</th>
                   <th className="px-8 py-6">Status / Role</th>
@@ -178,25 +178,25 @@ const ClientRegistry = () => {
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {loading ? (
-                  <tr><td colSpan="4" className="px-8 py-20 text-center italic text-primary/30 font-serif">Synchronizing member records...</td></tr>
+                  <tr><td colSpan="4" className="px-8 py-20 text-center italic text-primary/60 font-serif">Synchronizing member records...</td></tr>
                 ) : users.length === 0 ? (
-                  <tr><td colSpan="4" className="px-8 py-20 text-center italic text-primary/30 font-serif">No members registered in the sanctuary.</td></tr>
+                  <tr><td colSpan="4" className="px-8 py-20 text-center italic text-primary/60 font-serif">No members registered in the sanctuary.</td></tr>
                 ) : users.map((client) => (
                   <tr key={client.id} className="hover:bg-gray-50/50 transition-colors group">
                     <td className="px-8 py-6">
                       <div className="flex flex-col">
                         <span className="text-sm font-serif text-primary group-hover:text-secondary transition-colors">{client.name}</span>
-                        <span className="text-[10px] text-primary/40 tracking-wider font-mono">{client.email}</span>
+                        <span className="text-xs text-primary/70 tracking-wider font-mono">{client.email}</span>
                       </div>
                     </td>
                     <td className="px-8 py-6">
-                      <span className={`px-4 py-1.5 rounded-full text-[9px] uppercase tracking-widest font-bold ${
-                        client.role === 'admin' ? 'bg-purple-50 text-purple-600 border border-purple-100' : 'bg-gray-50 text-primary/40 border border-gray-100'
+                      <span className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-widest font-bold ${
+                        client.role === 'admin' ? 'bg-purple-50 text-purple-600 border border-purple-100' : 'bg-gray-50 text-primary/70 border border-gray-100'
                       }`}>
                         {client.role} Status
                       </span>
                     </td>
-                    <td className="px-8 py-6 text-xs text-primary/40">
+                    <td className="px-8 py-6 text-xs text-primary/70">
                       {new Date(client.created_at).toLocaleDateString()}
                     </td>
                     <td className="px-8 py-6 text-right">
@@ -206,7 +206,7 @@ const ClientRegistry = () => {
                           fetchUserOrders(client.id);
                           setIsModalOpen(true);
                         }}
-                        className="text-[10px] uppercase tracking-widest font-bold text-secondary hover:underline"
+                        className="text-xs uppercase tracking-widest font-bold text-secondary hover:underline"
                        >
                          Manage Profile
                        </button>
@@ -228,9 +228,9 @@ const ClientRegistry = () => {
               <header className="mb-12 flex justify-between items-center">
                 <div>
                   <h2 className="text-3xl font-serif text-primary">{selectedUser.name}</h2>
-                  <p className="text-[10px] uppercase tracking-widest text-secondary font-bold mt-2">{selectedUser.role} Registry Details</p>
+                  <p className="text-xs uppercase tracking-widest text-secondary font-bold mt-2">{selectedUser.role} Registry Details</p>
                 </div>
-                <button onClick={() => setIsModalOpen(false)} className="text-primary/20 hover:text-primary transition-colors">
+                <button onClick={() => setIsModalOpen(false)} className="text-primary/80 hover:text-primary transition-colors">
                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                    </svg>
@@ -239,32 +239,32 @@ const ClientRegistry = () => {
 
               <div className="grid grid-cols-2 gap-8 mb-16">
                  <div className="bg-gray-50 p-6 rounded-sm border border-gray-100">
-                    <span className="text-[9px] uppercase tracking-widest text-primary/30 font-bold block mb-2">Digital Address</span>
+                    <span className="text-xs uppercase tracking-widest text-primary/60 font-bold block mb-2">Digital Address</span>
                     <span className="text-sm font-mono text-primary">{selectedUser.email}</span>
                  </div>
                  <div className="bg-gray-50 p-6 rounded-sm border border-gray-100">
-                    <span className="text-[9px] uppercase tracking-widest text-primary/30 font-bold block mb-2">Sanctuary Entrance</span>
+                    <span className="text-xs uppercase tracking-widest text-primary/60 font-bold block mb-2">Sanctuary Entrance</span>
                     <span className="text-sm text-primary">{new Date(selectedUser.created_at).toLocaleString()}</span>
                  </div>
               </div>
 
               <div className="mb-16">
-                 <h3 className="text-[10px] uppercase tracking-[0.2em] text-primary/30 font-bold mb-6 border-b border-gray-100 pb-4">Acquisition History</h3>
+                 <h3 className="text-xs uppercase tracking-[0.2em] text-primary/60 font-bold mb-6 border-b border-gray-100 pb-4">Acquisition History</h3>
                  {loadingOrders ? (
-                   <p className="text-center py-10 italic text-primary/30 font-serif">Retrieving transaction logs...</p>
+                   <p className="text-center py-10 italic text-primary/60 font-serif">Retrieving transaction logs...</p>
                  ) : userOrders.length === 0 ? (
-                   <p className="text-center py-10 italic text-primary/30 font-serif">No acquisitions recorded for this member.</p>
+                   <p className="text-center py-10 italic text-primary/60 font-serif">No acquisitions recorded for this member.</p>
                  ) : (
                    <div className="space-y-4">
                      {userOrders.map(order => (
                        <div key={order.id} className="flex justify-between items-center p-6 bg-white border border-gray-100 rounded-sm hover:border-secondary/20 transition-all">
                           <div>
-                             <span className="text-[10px] font-mono text-primary/40 block">#LG-{order.id.toString().padStart(5, '0')}</span>
+                             <span className="text-xs font-mono text-primary/70 block">#LG-{order.id.toString().padStart(5, '0')}</span>
                              <span className="text-[11px] uppercase tracking-widest text-primary/60">{new Date(order.order_date).toLocaleDateString()}</span>
                           </div>
                           <div className="text-right">
                              <span className="text-sm font-serif text-secondary block">${parseFloat(order.total_amount).toLocaleString()}</span>
-                             <span className="text-[9px] uppercase tracking-widest text-primary/30">Finalized</span>
+                             <span className="text-xs uppercase tracking-widest text-primary/60">Finalized</span>
                           </div>
                        </div>
                      ))}
@@ -315,19 +315,19 @@ const ClientRegistry = () => {
                       }
                     }
                   }}
-                  className="w-full py-5 border border-primary text-primary text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-primary hover:text-white transition-all shadow-lg"
+                  className="w-full py-5 border border-primary text-primary text-xs uppercase tracking-[0.2em] font-bold hover:bg-primary hover:text-white transition-all shadow-lg"
                  >
                    Refine Member Identity (Edit)
                  </button>
                  <button 
                   onClick={() => handleResetPassword(selectedUser.id)}
-                  className="w-full py-5 border border-primary text-primary text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-primary hover:text-white transition-all shadow-lg"
+                  className="w-full py-5 border border-primary text-primary text-xs uppercase tracking-[0.2em] font-bold hover:bg-primary hover:text-white transition-all shadow-lg"
                  >
                    Reset Client Credentials
                  </button>
                  <button 
                   onClick={() => handleDeleteUser(selectedUser.id)}
-                  className="w-full py-5 text-red-500 text-[10px] uppercase tracking-[0.2em] font-bold hover:bg-red-50 transition-all border border-red-100 rounded-sm"
+                  className="w-full py-5 text-red-500 text-xs uppercase tracking-[0.2em] font-bold hover:bg-red-50 transition-all border border-red-100 rounded-sm"
                  >
                    Delete Member Account
                  </button>
@@ -341,3 +341,5 @@ const ClientRegistry = () => {
 };
 
 export default ClientRegistry;
+
+

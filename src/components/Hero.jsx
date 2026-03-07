@@ -49,9 +49,7 @@ const Hero = () => {
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
                 </Link>
               )}
-              <button onClick={() => Swal.fire({ title: 'AI Advisory', text: 'The expert AI consultant is currently calibrating for the next generation of rare acquisitions.', icon: 'info', background: '#fff', confirmButtonColor: '#1e1e1e'})} className="px-10 py-5 border-2 border-primary text-primary text-sm tracking-widest uppercase hover:bg-primary hover:text-white transition-all duration-300 hover:shadow-lg">
-                AI Analysis
-              </button>
+              
             </div>
             
             {/* Stats Section */}

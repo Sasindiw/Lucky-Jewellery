@@ -96,7 +96,7 @@ const GemstoneDetail = () => {
                     <div className="lg:w-1/2">
                         <div className="bg-gray-50 aspect-square rounded-2xl flex items-center justify-center p-12 shadow-inner border border-gray-100">
                             <img 
-                                src={`/images/${gemstone.image}`} 
+                                src={gemstone.image?.includes('gem_') || gemstone.image?.includes('placeholder') ? `/images/${gemstone.image}` : `http://localhost:5000/uploads/${gemstone.image}`} 
                                 alt={gemstone.variety} 
                                 className="w-full h-full object-contain filter drop-shadow-2xl" 
                             />
@@ -165,7 +165,7 @@ const GemstoneDetail = () => {
                             {recommendations.map((gem) => (
                                 <Link key={gem.id} to={`/gemstones/${gem.id}`} className="group block">
                                     <div className="bg-gray-50 aspect-[4/5] rounded-xl flex items-center justify-center p-6 mb-4 group-hover:shadow-xl transition-all border border-transparent group-hover:border-gray-100">
-                                        <img src={`/images/${gem.image}`} alt={gem.variety} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" />
+                                        <img src={gem.image?.includes('gem_') || gem.image?.includes('placeholder') ? `/images/${gem.image}` : `http://localhost:5000/uploads/${gem.image}`} alt={gem.variety} className="w-full h-full object-contain group-hover:scale-110 transition-transform duration-500" />
                                     </div>
                                     <h3 className="text-sm font-serif text-primary group-hover:text-secondary transition-colors">{gem.variety}</h3>
                                     <p className="text-xs text-primary/40">{gem.carat}ct • {gem.color}</p>

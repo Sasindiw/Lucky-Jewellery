@@ -10,6 +10,7 @@ import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
 import SalesOrders from './pages/SalesOrders';
 import ClientRegistry from './pages/ClientRegistry';
+import GemstoneRegistry from './pages/GemstoneRegistry';
 import UserDashboard from './pages/UserDashboard';
 import GemstoneDetail from './pages/GemstoneDetail';
 import Cart from './pages/Cart';
@@ -48,6 +49,14 @@ function App() {
           element={
             <ProtectedRoute isAdmin={true}>
               <ClientRegistry />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/gemstones" 
+          element={
+            <ProtectedRoute isAdmin={true}>
+              <GemstoneRegistry />
             </ProtectedRoute>
           } 
         />

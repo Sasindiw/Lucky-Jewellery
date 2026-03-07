@@ -38,10 +38,12 @@ const Login = () => {
         localStorage.setItem('token', data.token);
         localStorage.setItem('user', JSON.stringify(data.user));
         
+        const isAdmin = data.user.role === 'admin';
+        
         Swal.fire({
           icon: 'success',
-          title: 'Welcome Back',
-          text: 'Authentication successful. Entering sanctuary...',
+          title: isAdmin ? 'Admin Access Granted' : 'Welcome Back',
+          text: isAdmin ? 'Welcome to the Control Center, Administrator.' : 'Authentication successful. Entering sanctuary...',
           showConfirmButton: false,
           timer: 2000,
           background: '#ffffff',

@@ -34,7 +34,7 @@ const SalesOrders = () => {
       html:
         `<div class="flex flex-col gap-4">
           <div>
-            <label class="text-[10px] uppercase tracking-widest text-primary/40 block mb-2 font-bold">Logistics Status</label>
+            <label class="text-xs uppercase tracking-widest text-primary/70 block mb-2 font-bold">Logistics Status</label>
             <select id="swal-status" class="swal2-input !m-0 !w-full">
               <option value="Pending" ${currentStatus === 'Pending' ? 'selected' : ''}>Pending Approval</option>
               <option value="Processing" ${currentStatus === 'Processing' ? 'selected' : ''}>Crafting / Processing</option>
@@ -44,7 +44,7 @@ const SalesOrders = () => {
             </select>
           </div>
           <div>
-            <label class="text-[10px] uppercase tracking-widest text-primary/40 block mb-2 font-bold">Financial Status</label>
+            <label class="text-xs uppercase tracking-widest text-primary/70 block mb-2 font-bold">Financial Status</label>
             <select id="swal-payment" class="swal2-input !m-0 !w-full">
               <option value="Unpaid" ${currentPaymentStatus === 'Unpaid' ? 'selected' : ''}>Awaiting Settlement</option>
               <option value="Paid" ${currentPaymentStatus === 'Paid' ? 'selected' : ''}>Funds Secured</option>
@@ -101,13 +101,13 @@ const SalesOrders = () => {
         <header className="px-12 py-10 flex justify-between items-center bg-white/80 backdrop-blur-xl border-b border-gray-100">
           <div>
             <h1 className="text-3xl font-serif text-primary capitalize">Sales & Orders</h1>
-            <p className="text-primary/40 text-xs font-light tracking-wide mt-1">Real-time oversight of the Lucky Gems transaction history.</p>
+            <p className="text-primary/70 text-sm font-light tracking-wide mt-1">Real-time oversight of the Lucky Gems transaction history.</p>
           </div>
           
           <div className="flex items-center gap-6">
              <div className="w-px h-8 bg-gray-200"></div>
              <div className="flex items-center gap-3">
-               <span className="text-[10px] uppercase tracking-widest font-bold text-primary/60">Lead Admin</span>
+               <span className="text-xs uppercase tracking-widest font-bold text-primary/60">Lead Admin</span>
                <div className="w-10 h-10 rounded-full bg-secondary text-primary flex items-center justify-center font-serif text-lg">A</div>
              </div>
           </div>
@@ -121,7 +121,7 @@ const SalesOrders = () => {
                 <span className="text-2xl opacity-40 group-hover:opacity-100 transition-opacity">✨</span>
                 <div className="w-2 h-2 rounded-full bg-secondary/30"></div>
               </div>
-              <h3 className="text-primary/30 text-[10px] uppercase tracking-[0.2em] mb-2 font-bold">Secured Revenue</h3>
+              <h3 className="text-primary/60 text-xs uppercase tracking-[0.2em] mb-2 font-bold">Secured Revenue</h3>
               <p className="text-3xl font-serif text-primary">${totalRevenue.toLocaleString()}</p>
             </div>
             <div className="bg-white p-8 rounded-sm shadow-sm border border-gray-100 group hover:border-secondary/30 transition-all duration-700">
@@ -129,7 +129,7 @@ const SalesOrders = () => {
                 <span className="text-2xl opacity-40 group-hover:opacity-100 transition-opacity">📜</span>
                 <div className="w-2 h-2 rounded-full bg-secondary/30"></div>
               </div>
-              <h3 className="text-primary/30 text-[10px] uppercase tracking-[0.2em] mb-2 font-bold">Total Orders</h3>
+              <h3 className="text-primary/60 text-xs uppercase tracking-[0.2em] mb-2 font-bold">Total Orders</h3>
               <p className="text-3xl font-serif text-primary">{orders.length}</p>
             </div>
             <div className="bg-white p-8 rounded-sm shadow-sm border border-gray-100 group hover:border-secondary/30 transition-all duration-700">
@@ -137,14 +137,14 @@ const SalesOrders = () => {
                 <span className="text-2xl opacity-40 group-hover:opacity-100 transition-opacity">📈</span>
                 <div className="w-2 h-2 rounded-full bg-secondary/30"></div>
               </div>
-              <h3 className="text-primary/30 text-[10px] uppercase tracking-[0.2em] mb-2 font-bold">Avg. Investment</h3>
+              <h3 className="text-primary/60 text-xs uppercase tracking-[0.2em] mb-2 font-bold">Avg. Investment</h3>
               <p className="text-3xl font-serif text-primary">${orders.length > 0 ? (totalRevenue / orders.length).toLocaleString(undefined, {maximumFractionDigits: 0}) : '0'}</p>
             </div>
           </div>
 
           <div className="bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden animate-in fade-in duration-1000">
              <table className="w-full text-left">
-              <thead className="bg-gray-50/50 text-[10px] uppercase tracking-[0.2em] text-primary/30 font-bold border-b border-gray-100">
+              <thead className="bg-gray-50/50 text-xs uppercase tracking-[0.2em] text-primary/60 font-bold border-b border-gray-100">
                 <tr>
                   <th className="px-8 py-6">Reference</th>
                   <th className="px-8 py-6">Client Identity</th>
@@ -155,30 +155,30 @@ const SalesOrders = () => {
               </thead>
               <tbody className="divide-y divide-gray-50">
                 {loading ? (
-                   <tr><td colSpan="5" className="px-8 py-20 text-center italic text-primary/30 font-serif">Retrieving transaction logs...</td></tr>
+                   <tr><td colSpan="5" className="px-8 py-20 text-center italic text-primary/60 font-serif">Retrieving transaction logs...</td></tr>
                 ) : orders.length === 0 ? (
-                   <tr><td colSpan="5" className="px-8 py-20 text-center italic text-primary/30 font-serif">No sales recorded yet.</td></tr>
+                   <tr><td colSpan="5" className="px-8 py-20 text-center italic text-primary/60 font-serif">No sales recorded yet.</td></tr>
                 ) : orders.map((order) => (
                   <tr key={order.id} className="hover:bg-gray-50/50 transition-colors group">
-                    <td className="px-8 py-6 font-mono text-xs text-primary/50 group-hover:text-primary transition-colors">#LG-{order.id.toString().padStart(5, '0')}</td>
+                    <td className="px-8 py-6 font-mono text-sm text-primary/80 group-hover:text-primary transition-colors">#LG-{order.id.toString().padStart(5, '0')}</td>
                     <td className="px-8 py-6">
                       <div className="flex flex-col">
                         <span className="text-sm font-serif text-primary">{order.User?.name}</span>
-                        <span className="text-[10px] text-primary/40 tracking-wider lowercase">{order.User?.email}</span>
+                        <span className="text-xs text-primary/70 tracking-wider lowercase">{order.User?.email}</span>
                       </div>
                     </td>
                     <td className="px-8 py-6">
                        <div className="flex flex-col">
                          <span className="text-sm font-serif text-secondary">${parseFloat(order.total_amount).toLocaleString()}</span>
                          <div className="flex gap-2 mt-1">
-                            <span className={`text-[8px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full border ${
+                            <span className={`text-xs uppercase tracking-widest font-bold px-2 py-0.5 rounded-full border ${
                               order.payment_status === 'Paid' ? 'border-green-100 text-green-600 bg-green-50' : 'border-orange-100 text-orange-600 bg-orange-50'
                             }`}>{order.payment_status}</span>
-                            <span className="text-[8px] uppercase tracking-widest font-bold px-2 py-0.5 rounded-full border border-gray-100 text-primary/40">{order.status}</span>
+                            <span className="text-xs uppercase tracking-widest font-bold px-2 py-0.5 rounded-full border border-gray-100 text-primary/70">{order.status}</span>
                          </div>
                        </div>
                     </td>
-                    <td className="px-8 py-6 text-[10px] uppercase tracking-widest text-primary/40">
+                    <td className="px-8 py-6 text-xs uppercase tracking-widest text-primary/70">
                       {new Date(order.order_date).toLocaleDateString()}
                     </td>
                     <td className="px-8 py-6 text-right">
@@ -187,7 +187,7 @@ const SalesOrders = () => {
                           setSelectedOrder(order);
                           setIsModalOpen(true);
                         }}
-                        className="text-[10px] uppercase tracking-widest font-bold text-secondary hover:underline"
+                        className="text-xs uppercase tracking-widest font-bold text-secondary hover:underline"
                        >
                          Oversee
                        </button>
@@ -209,27 +209,27 @@ const SalesOrders = () => {
                 {/* Left Sidebar - Order Info */}
                 <div className="w-1/3 bg-gray-50 p-10 border-r border-gray-100 overflow-y-auto">
                    <h2 className="text-2xl font-serif text-primary mb-2">#LG-{selectedOrder.id.toString().padStart(5, '0')}</h2>
-                   <p className="text-[9px] uppercase tracking-widest text-secondary font-bold mb-8">Acquisition Summary</p>
+                   <p className="text-xs uppercase tracking-widest text-secondary font-bold mb-8">Acquisition Summary</p>
                    
                    <div className="space-y-6">
                       <div>
-                        <span className="text-[8px] uppercase tracking-widest text-primary/30 font-bold block mb-1">Client</span>
+                        <span className="text-xs uppercase tracking-widest text-primary/60 font-bold block mb-1">Client</span>
                         <span className="text-xs font-serif text-primary block">{selectedOrder.User?.name}</span>
-                        <span className="text-[9px] text-primary/40 lowercase font-mono">{selectedOrder.User?.email}</span>
+                        <span className="text-xs text-primary/70 lowercase font-mono">{selectedOrder.User?.email}</span>
                       </div>
                       <div>
-                        <span className="text-[8px] uppercase tracking-widest text-primary/30 font-bold block mb-1">Investment Date</span>
+                        <span className="text-xs uppercase tracking-widest text-primary/60 font-bold block mb-1">Investment Date</span>
                         <span className="text-xs text-primary">{new Date(selectedOrder.order_date).toLocaleString()}</span>
                       </div>
                       <div>
-                        <span className="text-[8px] uppercase tracking-widest text-primary/30 font-bold block mb-1">Total Value</span>
+                        <span className="text-xs uppercase tracking-widest text-primary/60 font-bold block mb-1">Total Value</span>
                         <span className="text-xl font-serif text-secondary">${parseFloat(selectedOrder.total_amount).toLocaleString()}</span>
                       </div>
                       <div className="pt-6 border-t border-gray-200">
-                         <span className="text-[8px] uppercase tracking-widest text-primary/30 font-bold block mb-3">Lifecycle Control</span>
+                         <span className="text-xs uppercase tracking-widest text-primary/60 font-bold block mb-3">Lifecycle Control</span>
                          <button 
                           onClick={() => handleUpdateStatus(selectedOrder.id, selectedOrder.status, selectedOrder.payment_status)}
-                          className="w-full py-3 bg-primary text-white text-[9px] uppercase tracking-widest font-bold hover:bg-primary/90 transition-all"
+                          className="w-full py-3 bg-primary text-white text-xs uppercase tracking-widest font-bold hover:bg-primary/90 transition-all"
                          >
                            Update Status
                          </button>
@@ -240,8 +240,8 @@ const SalesOrders = () => {
                 {/* Right Content - Gems in Order */}
                 <div className="flex-1 p-10 overflow-y-auto">
                    <header className="flex justify-between items-center mb-10">
-                      <h3 className="text-[10px] uppercase tracking-[0.2em] text-primary/30 font-bold">Acquired Assets</h3>
-                      <button onClick={() => setIsModalOpen(false)} className="text-primary/20 hover:text-primary transition-colors">
+                      <h3 className="text-xs uppercase tracking-[0.2em] text-primary/60 font-bold">Acquired Assets</h3>
+                      <button onClick={() => setIsModalOpen(false)} className="text-primary/80 hover:text-primary transition-colors">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-5 h-5">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                         </svg>
@@ -259,15 +259,15 @@ const SalesOrders = () => {
                               )}
                            </div>
                            <div className="flex-1">
-                              <span className="text-[8px] uppercase tracking-widest text-secondary font-bold block mb-1">{item.Gemstone?.variety}</span>
+                              <span className="text-xs uppercase tracking-widest text-secondary font-bold block mb-1">{item.Gemstone?.variety}</span>
                               <h4 className="text-sm font-serif text-primary mb-1">{item.Gemstone?.name}</h4>
-                              <div className="flex gap-4 text-[9px] text-primary/40 font-light italic">
+                              <div className="flex gap-4 text-xs text-primary/70 font-light italic">
                                  <span>{item.Gemstone?.carat} Carats</span>
                                  <span>{item.Gemstone?.cut} Cut</span>
                               </div>
                            </div>
                            <div className="text-right">
-                              <span className="text-[10px] text-primary/30 block mb-1">x{item.quantity}</span>
+                              <span className="text-xs text-primary/60 block mb-1">x{item.quantity}</span>
                               <span className="text-xs font-serif text-primary">${parseFloat(item.Gemstone?.price || 0).toLocaleString()}</span>
                            </div>
                         </div>
@@ -283,3 +283,5 @@ const SalesOrders = () => {
 };
 
 export default SalesOrders;
+
+

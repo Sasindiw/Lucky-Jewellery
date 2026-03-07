@@ -133,14 +133,14 @@ const AdminDashboard = ({ defaultTab = 'orders' }) => {
       <main className="w-full bg-gray-50/30 overflow-y-auto mt-20">
         <header className="px-12 py-10 flex justify-between items-center bg-white/80 backdrop-blur-xl border-b border-gray-100">
           <div>
-            <h1 className="text-3xl font-serif text-primary capitalize">{activeTab} management</h1>
-            <p className="text-primary/40 text-xs font-light tracking-wide mt-1">Real-time oversight of the Lucky Gems sanctuary.</p>
+            <h1 className="text-3xl font-serif text-primary">Admin Dashboard</h1>
+            <p className="text-primary/70 text-sm font-light tracking-wide mt-1">Real-time oversight of the Lucky Gems sanctuary.</p>
           </div>
           
           <div className="flex items-center gap-6">
              <div className="w-px h-8 bg-gray-200"></div>
              <div className="flex items-center gap-3">
-               <span className="text-[10px] uppercase tracking-widest font-bold text-primary/60">Lead Admin</span>
+               <span className="text-xs uppercase tracking-widest font-bold text-primary/60">Lead Admin</span>
                <div className="w-10 h-10 rounded-full bg-secondary text-primary flex items-center justify-center font-serif text-lg">A</div>
              </div>
           </div>
@@ -155,7 +155,7 @@ const AdminDashboard = ({ defaultTab = 'orders' }) => {
                   <span className="text-2xl opacity-40 group-hover:opacity-100 transition-opacity">{stat.icon}</span>
                   <div className="w-2 h-2 rounded-full bg-secondary/30"></div>
                 </div>
-                <h3 className="text-primary/30 text-[10px] uppercase tracking-[0.2em] mb-2 font-bold">{stat.label}</h3>
+                <h3 className="text-primary/60 text-xs uppercase tracking-[0.2em] mb-2 font-bold">{stat.label}</h3>
                 <p className="text-3xl font-serif text-primary">{stat.value}</p>
               </div>
             ))}
@@ -165,7 +165,7 @@ const AdminDashboard = ({ defaultTab = 'orders' }) => {
           {activeTab === 'orders' && (
             <div className="bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden animate-in fade-in duration-1000">
                <table className="w-full text-left">
-                <thead className="bg-gray-50/50 text-[10px] uppercase tracking-[0.2em] text-primary/30 font-bold border-b border-gray-100">
+                <thead className="bg-gray-50/50 text-xs uppercase tracking-[0.2em] text-primary/60 font-bold border-b border-gray-100">
                   <tr>
                     <th className="px-8 py-6">Order ID</th>
                     <th className="px-8 py-6">Client</th>
@@ -176,15 +176,15 @@ const AdminDashboard = ({ defaultTab = 'orders' }) => {
                 <tbody className="divide-y divide-gray-50">
                   {orders.map((order) => (
                     <tr key={order.id} className="hover:bg-gray-50/50 transition-colors">
-                      <td className="px-8 py-6 font-mono text-xs text-primary/50">#LG-{order.id.toString().padStart(5, '0')}</td>
+                      <td className="px-8 py-6 font-mono text-sm text-primary/80">#LG-{order.id.toString().padStart(5, '0')}</td>
                       <td className="px-8 py-6">
                         <div className="flex flex-col">
                           <span className="text-sm font-serif text-primary">{order.User?.name}</span>
-                          <span className="text-[10px] text-primary/40">{order.User?.email}</span>
+                          <span className="text-xs text-primary/70">{order.User?.email}</span>
                         </div>
                       </td>
                       <td className="px-8 py-6 font-serif text-secondary">${parseFloat(order.total_amount).toLocaleString()}</td>
-                      <td className="px-8 py-6 text-right text-[10px] uppercase tracking-widest text-primary/40">
+                      <td className="px-8 py-6 text-right text-xs uppercase tracking-widest text-primary/70">
                         {new Date(order.order_date).toLocaleDateString()}
                       </td>
                     </tr>
@@ -197,7 +197,7 @@ const AdminDashboard = ({ defaultTab = 'orders' }) => {
           {activeTab === 'users' && (
              <div className="bg-white rounded-sm shadow-sm border border-gray-100 overflow-hidden animate-in fade-in duration-1000">
              <table className="w-full text-left">
-              <thead className="bg-gray-50/50 text-[10px] uppercase tracking-[0.2em] text-primary/30 font-bold border-b border-gray-100">
+              <thead className="bg-gray-50/50 text-xs uppercase tracking-[0.2em] text-primary/60 font-bold border-b border-gray-100">
                 <tr>
                   <th className="px-8 py-6">Member Profile</th>
                   <th className="px-8 py-6">Privacy Tier</th>
@@ -210,17 +210,17 @@ const AdminDashboard = ({ defaultTab = 'orders' }) => {
                     <td className="px-8 py-6">
                       <div className="flex flex-col">
                         <span className="text-sm font-serif text-primary">{client.name}</span>
-                        <span className="text-[10px] text-primary/40">{client.email}</span>
+                        <span className="text-xs text-primary/70">{client.email}</span>
                       </div>
                     </td>
                     <td className="px-8 py-6">
-                      <span className={`px-4 py-1.5 rounded-full text-[9px] uppercase tracking-widest font-bold ${
-                        client.role === 'admin' ? 'bg-purple-50 text-purple-600 border border-purple-100' : 'bg-gray-50 text-primary/40 border border-gray-100'
+                      <span className={`px-4 py-1.5 rounded-full text-xs uppercase tracking-widest font-bold ${
+                        client.role === 'admin' ? 'bg-purple-50 text-purple-600 border border-purple-100' : 'bg-gray-50 text-primary/70 border border-gray-100'
                       }`}>
                         {client.role} Member
                       </span>
                     </td>
-                    <td className="px-8 py-6 text-right text-[10px] uppercase tracking-widest text-primary/40">
+                    <td className="px-8 py-6 text-right text-xs uppercase tracking-widest text-primary/70">
                       {new Date(client.created_at).toLocaleDateString()}
                     </td>
                   </tr>
@@ -240,7 +240,7 @@ const AdminDashboard = ({ defaultTab = 'orders' }) => {
             <div className="p-12">
               <header className="mb-12 flex justify-between items-center">
                 <h2 className="text-3xl font-serif text-primary">{editingGem ? 'Refine Masterpiece' : 'Register New Gem'}</h2>
-                <button onClick={() => setIsModalOpen(false)} className="text-primary/20 hover:text-primary transition-colors">
+                <button onClick={() => setIsModalOpen(false)} className="text-primary/80 hover:text-primary transition-colors">
                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-8 h-8">
                      <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                    </svg>
@@ -250,36 +250,36 @@ const AdminDashboard = ({ defaultTab = 'orders' }) => {
               <form onSubmit={handleGemAction} className="space-y-8">
                 <div className="grid grid-cols-2 gap-8">
                   <div className="col-span-2">
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-primary/40 mb-3 block">Display Name</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-primary/70 mb-3 block">Display Name</label>
                     <input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-gray-50 border-gray-100 p-4 rounded-sm text-sm focus:border-secondary outline-none transition-all" required />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-primary/40 mb-3 block">Variety</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-primary/70 mb-3 block">Variety</label>
                     <input type="text" value={formData.variety} onChange={e => setFormData({...formData, variety: e.target.value})} className="w-full bg-gray-50 border-gray-100 p-4 rounded-sm text-sm focus:border-secondary outline-none transition-all" required />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-primary/40 mb-3 block">Price (with symbol)</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-primary/70 mb-3 block">Price (with symbol)</label>
                     <input type="text" value={formData.price} onChange={e => setFormData({...formData, price: e.target.value})} className="w-full bg-gray-50 border-gray-100 p-4 rounded-sm text-sm focus:border-secondary outline-none transition-all" placeholder="$0.00" required />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-primary/40 mb-3 block">Carat Weight</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-primary/70 mb-3 block">Carat Weight</label>
                     <input type="number" step="0.01" value={formData.carat} onChange={e => setFormData({...formData, carat: e.target.value})} className="w-full bg-gray-50 border-gray-100 p-4 rounded-sm text-sm focus:border-secondary outline-none transition-all" required />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-primary/40 mb-3 block">Color</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-primary/70 mb-3 block">Color</label>
                     <input type="text" value={formData.color} onChange={e => setFormData({...formData, color: e.target.value})} className="w-full bg-gray-50 border-gray-100 p-4 rounded-sm text-sm focus:border-secondary outline-none transition-all" required />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-primary/40 mb-3 block">Shape</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-primary/70 mb-3 block">Shape</label>
                     <input type="text" value={formData.shape} onChange={e => setFormData({...formData, shape: e.target.value})} className="w-full bg-gray-50 border-gray-100 p-4 rounded-sm text-sm focus:border-secondary outline-none transition-all" required />
                   </div>
                   <div>
-                    <label className="text-[10px] uppercase tracking-widest font-bold text-primary/40 mb-3 block">Stock Available</label>
+                    <label className="text-xs uppercase tracking-widest font-bold text-primary/70 mb-3 block">Stock Available</label>
                     <input type="number" value={formData.stock} onChange={e => setFormData({...formData, stock: parseInt(e.target.value)})} className="w-full bg-gray-50 border-gray-100 p-4 rounded-sm text-sm focus:border-secondary outline-none transition-all" required />
                   </div>
                 </div>
 
-                <button type="submit" className="w-full py-5 bg-primary text-white text-[10px] uppercase tracking-[0.2em] font-bold shadow-2xl hover:bg-secondary transition-all">
+                <button type="submit" className="w-full py-5 bg-primary text-white text-xs uppercase tracking-[0.2em] font-bold shadow-2xl hover:bg-secondary transition-all">
                   {editingGem ? 'Commit Changes' : 'Publish to Vault'}
                 </button>
               </form>
@@ -292,3 +292,5 @@ const AdminDashboard = ({ defaultTab = 'orders' }) => {
 };
 
 export default AdminDashboard;
+
+

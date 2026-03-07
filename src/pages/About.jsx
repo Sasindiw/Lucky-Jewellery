@@ -5,7 +5,7 @@ const About = () => {
     <div className="pt-24 min-h-screen bg-white">
       {/* Hero Section */}
       <section className="relative py-32 overflow-hidden bg-primary text-white">
-        <div className="absolute inset-0 bg-[url('/images/hero_elegant.png')] bg-cover bg-center opacity-20"></div>
+        <div className="absolute inset-0 bg-[url('/images/about-hero.jpg')] bg-cover bg-center opacity-20"></div>
         <div className="container mx-auto px-6 md:px-12 relative z-10 text-center">
             <span className="text-secondary font-bold tracking-[0.3em] text-xs uppercase mb-4 block">Our Heritage</span>
             <h1 className="text-5xl md:text-7xl font-serif mb-8">A Legacy of Brilliance</h1>
@@ -20,7 +20,7 @@ const About = () => {
         <div className="container mx-auto px-6 md:px-12">
             <div className="flex flex-col lg:flex-row items-center gap-16">
                 <div className="lg:w-1/2">
-                    <img src="/images/hero_elegant.png" alt="Our Workshop" className="rounded-2xl shadow-2xl" />
+                    <img src="/images/about-hero.jpg" alt="Our Workshop" className="rounded-2xl shadow-2xl" />
                 </div>
                 <div className="lg:w-1/2">
                     <h2 className="text-4xl font-serif text-primary mb-8">Founded on Trust</h2>
